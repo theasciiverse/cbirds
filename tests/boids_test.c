@@ -528,6 +528,9 @@ static void test_a_closed_pipe_leaves_the_terminal_as_it_was(void) {
     int terminal = open(name, O_RDWR | O_NOCTTY);
     assert(terminal >= 0);
     struct termios before, after;
+    /* musl fills only the kernel's part of c_cc: the rest must not be stack. */
+    memset(&before, 0, sizeof(before));
+    memset(&after, 0, sizeof(after));
     assert(tcgetattr(terminal, &before) == 0);
     int output[2];
     assert(pipe(output) == 0);
@@ -7684,6 +7687,8 @@ static void test_text_on_a_pipe_flies_on_a_terminal_and_gives_it_back(void) {
             int terminal = open(name, O_RDWR);
             if (terminal < 0 || ioctl(terminal, TIOCSCTTY, 0) < 0) _exit(LEADER_NO_TERMINAL + 1);
             struct termios before, after;
+            memset(&before, 0, sizeof(before)); /* as above, for musl */
+            memset(&after, 0, sizeof(after));
             if (tcgetattr(terminal, &before) < 0) _exit(LEADER_NO_TERMINAL + 2);
             pid_t run = fork();
             if (run < 0) _exit(LEADER_NO_TERMINAL + 3);
