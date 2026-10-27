@@ -66,3 +66,9 @@ colours, mouse scatters the flock, `h` opens the sliders, `q` quits.
   quits in about a second with status 0, Ctrl+C (exit 130) and SIGTERM
   (exit 143) quit with the terminal settings put back.
 - macOS: not built here.
+
+## Ours
+
+- **How to play it, at the top of README.md.** A short note on installing and
+  starting it with av, or from a release archive; the original text follows
+  unchanged.
